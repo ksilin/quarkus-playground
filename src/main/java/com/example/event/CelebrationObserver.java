@@ -2,28 +2,32 @@ package com.example.event;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.event.Observes;
-import jakarta.inject.Singleton;
+import jakarta.inject.Inject;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.jboss.logging.Logger;
 
 @ApplicationScoped
 public class CelebrationObserver {
 
-    @ConfigProperty(name = "shouldFail", defaultValue = "false")
-    boolean shouldFail;
+    //@ConfigProperty(name = "shouldFail", defaultValue = "false")
+    private boolean shouldFail;
 
-    @ConfigProperty(name = "shouldSleep", defaultValue = "false")
-    boolean shouldSleep;
+    //@ConfigProperty(name = "shouldSleep", defaultValue = "false")
+    private boolean shouldSleep;
 
-//    public CelebrationObserver(@ConfigProperty(name = "shouldFail", defaultValue = "false")
-//                               boolean shouldFail,
-//                               @ConfigProperty(name = "shouldSleep", defaultValue = "false")
-//                               boolean shouldSleep) {
-//        this.shouldSleep = shouldSleep;
-//        this.shouldFail = shouldFail;
-//    }
+    public CelebrationObserver(){}
 
-    Logger log = Logger.getLogger(CelebrationObserver.class);
+    // @Inject is supposed to be optional, but properties stay at default if not annotated.
+    @Inject
+    public CelebrationObserver(@ConfigProperty(name = "shouldFail", defaultValue = "false")
+                               boolean shouldFail,
+                               @ConfigProperty(name = "shouldSleep", defaultValue = "false")
+                               boolean shouldSleep) {
+        this.shouldSleep = shouldSleep;
+        this.shouldFail = shouldFail;
+    }
+
+    private final Logger log = Logger.getLogger(CelebrationObserver.class);
 
     void celebrate(@Observes CelebrateEvent celebrationEvent) throws InterruptedException {
         if (shouldSleep) {

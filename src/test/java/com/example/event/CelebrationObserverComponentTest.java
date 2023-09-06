@@ -52,7 +52,6 @@ public class CelebrationObserverComponentTest {
     @Inject
     Event<CelebrateEvent> event;
 
-    // will not exist if not injected
     @Inject
     CelebrationObserver listener;
 
